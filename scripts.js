@@ -1,3 +1,4 @@
+
 var greenIcon = new L.Icon({
   iconUrl: 'assets/leaflet-color-markers-master/img/marker-icon-2x-green.png',
   shadowUrl: 'assets/leaflet-color-markers-master/img/marker-shadow.png',
@@ -90,7 +91,8 @@ console.log(userLocation['_lastCenter']);
 
 // LEGENDE GARSTELLEN
 var legend = L.control({position: 'bottomright'});
-legend.onAdd = (map) => {var div = L.DomUtil.create('div', 'legend');
+legend.onAdd = function (map) {
+    var div = L.DomUtil.create('div', 'legend');
 	 div.innerHTML +=
 		 	'<h6> Last Heard </h6>'+
 		 	'<p style="background:green; color:white "> within 5 min</p>' +
@@ -100,14 +102,24 @@ legend.onAdd = (map) => {var div = L.DomUtil.create('div', 'legend');
 		 	'<p style="background:grey; color:white "> older 12 h</p>';
 		 
 		 	
-    return div;};
+    return div;
+};
 legend.addTo(map);
 
 
 
 
 function update_data(){
-$.getJSON('api.php', (data) => {var callsign_list = [];
+$.getJSON({
+	url:'https://api.freedata.app/explorer.php',
+	type: 'GET', 
+	dataType: 'jsonp',
+	error: function(xhr, status, error) {
+                console.log(error)
+            },
+	success: 
+	function(data) {
+	var callsign_list = [];
 	Marker10m.clearLayers();
 	Marker12m.clearLayers();
 	Marker15m.clearLayers();
@@ -283,15 +295,7 @@ $.getJSON('api.php', (data) => {var callsign_list = [];
 			</table>
 			<br>
 		`;
-		
-
-		
-
-
-
-
-
-			
+	
 		
 		if(frequency >= 28000000 && frequency <= 28500000){
 			L.marker([latlon[0], latlon[1]],{icon: iconColor}).addTo(Marker10m).bindPopup(popup, {
@@ -341,97 +345,138 @@ $.getJSON('api.php', (data) => {var callsign_list = [];
 		
 		
 		
-		}});
+		}
+		
+		
+		
+		
+  
+		
+}
+	},);
+
+
+
 }
 
 // set map refresh interval
-setInterval(() => {update_data()}, 60000);
+setInterval(function () {update_data()}, 60000); 
 
 
 
 var enableFilterButton10m = document.getElementById("enable-filter-10m");
-enableFilterButton10m.addEventListener("change", () => {if (enableFilterButton10m.checked) {
+enableFilterButton10m.addEventListener("change", function(){ 
+	if (enableFilterButton10m.checked) {
 		map.addLayer(Marker10m);
 	} else {
 		map.removeLayer(Marker10m);
-	}});
+	}
+});
 
 var enableFilterButton12m = document.getElementById("enable-filter-12m");
-enableFilterButton12m.addEventListener("change", () => {if (enableFilterButton12m.checked) {
+enableFilterButton12m.addEventListener("change", function(){ 
+	if (enableFilterButton12m.checked) {
 		map.addLayer(Marker12m);
 	} else {
 		map.removeLayer(Marker12m);
-	}});
+	}
+});
 
 var enableFilterButton15m = document.getElementById("enable-filter-15m");
-enableFilterButton15m.addEventListener("change", () => {if (enableFilterButton15m.checked) {
+enableFilterButton15m.addEventListener("change", function(){ 
+	if (enableFilterButton15m.checked) {
 		map.addLayer(Marker15m);
 	} else {
 		map.removeLayer(Marker15m); 
-	}});
+	}
+});
 
 var enableFilterButton17m = document.getElementById("enable-filter-17m");
-enableFilterButton17m.addEventListener("change", () => {if (enableFilterButton17m.checked) {
+enableFilterButton17m.addEventListener("change", function(){ 
+	if (enableFilterButton17m.checked) {
 		map.addLayer(Marker17m); 
 	} else {
 		map.removeLayer(Marker17m);
-	}});
+	}
+});
 
 var enableFilterButton20m = document.getElementById("enable-filter-20m");
-enableFilterButton20m.addEventListener("change", () => {if (enableFilterButton20m.checked) {
+enableFilterButton20m.addEventListener("change", function(){ 
+	if (enableFilterButton20m.checked) {
 		map.addLayer(Marker20m);
 	} else {
 		map.removeLayer(Marker20m);
-	}});
+	}
+});
 
 var enableFilterButton30m = document.getElementById("enable-filter-30m");
-enableFilterButton30m.addEventListener("change", () => {if (enableFilterButton30m.checked) {
+enableFilterButton30m.addEventListener("change", function(){ 
+	if (enableFilterButton30m.checked) {
 		map.addLayer(Marker30m);
 	} else {
 		map.removeLayer(Marker30m);
-	}});
+	}
+});
 
 var enableFilterButton40m = document.getElementById("enable-filter-40m");
-enableFilterButton40m.addEventListener("change", () => {if (enableFilterButton40m.checked) {
+enableFilterButton40m.addEventListener("change", function(){ 
+	if (enableFilterButton40m.checked) {
 		map.addLayer(Marker40m);
 	} else {
 		map.removeLayer(Marker40m);
-	}});
+	}
+	
+	
+	
+});
 
 var enableFilterButton60m = document.getElementById("enable-filter-60m");
-enableFilterButton60m.addEventListener("change", () => {if (enableFilterButton60m.checked) {
+enableFilterButton60m.addEventListener("change", function(){ 
+	if (enableFilterButton60m.checked) {
 		map.addLayer(Marker60m);
 	} else {
 		map.removeLayer(Marker60m);
-	}});
+	}
+	
+	
+	
+});
 
 var enableFilterButton80m = document.getElementById("enable-filter-80m");
-enableFilterButton80m.addEventListener("change", () => {if (enableFilterButton80m.checked) {
+enableFilterButton80m.addEventListener("change", function(){ 
+	if (enableFilterButton80m.checked) {
 		map.addLayer(Marker80m);
 	} else {
 		map.removeLayer(Marker80m); 
-	}});
+	}
+});
 
 var enableFilterButton160m = document.getElementById("enable-filter-160m");
-enableFilterButton160m.addEventListener("change", () => {if (enableFilterButton160m.checked) {
+enableFilterButton160m.addEventListener("change", function(){ 
+	if (enableFilterButton160m.checked) {
 		map.addLayer(Marker160m);
 	} else {
 		map.removeLayer(Marker160m);
-	}});
+	}
+});
 
 var enableFilterButtonOthers = document.getElementById("enable-filter-others");
-enableFilterButtonOthers.addEventListener("change", () => {if (enableFilterButtonOthers.checked) {
+enableFilterButtonOthers.addEventListener("change", function(){ 
+	if (enableFilterButtonOthers.checked) {
 		map.addLayer(MarkerOthers);
 	} else {
 		map.removeLayer(MarkerOthers);
-	}});
+	}
+});
 
 var enableFilterButtonLines = document.getElementById("enable-filter-lines");
-enableFilterButtonLines.addEventListener("change", () => {if (enableFilterButtonLines.checked) {
+enableFilterButtonLines.addEventListener("change", function(){ 
+	if (enableFilterButtonLines.checked) {
 		map.addLayer(Lines);
 	} else {
 		map.removeLayer(Lines);
-	}});
+	}
+});
 
 
 
@@ -446,8 +491,8 @@ function distance(lat1, lon1, lat2, lon2, unit) {
         dist = Math.acos(dist)
         dist = dist * 180/Math.PI
         dist = dist * 60 * 1.1515
-        if (unit=="K") { dist *= 1.609344 }
-        if (unit=="N") { dist *= 0.8684 }
+        if (unit=="K") { dist = dist * 1.609344 }
+        if (unit=="N") { dist = dist * 0.8684 }
         return dist
 }
 
