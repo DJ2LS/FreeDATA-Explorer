@@ -96,6 +96,12 @@ legend.onAdd = function (map) {
 };
 legend.addTo(map);
 
+function addMinutes(date, minutes) {
+  date.setMinutes(date.getMinutes() + minutes);
+
+  return date;
+}
+
 function update_data() {
   $.getJSON({
     url: "https://api.freedata.app/explorer.php",
@@ -128,6 +134,9 @@ function update_data() {
       }
       console.log(callsign_list);
 
+      //Get locale from browser for properly formatted date/time stamps
+      var locale = navigator.language;
+
       for (var i = 0; i < data.length; i++) {
         console.log(data[i]);
         var callsign = data[i]["callsign"];
@@ -157,9 +166,11 @@ function update_data() {
           console.log(e);
           var latlon = [0.0, 0.0];
         }
+        //Seems to be UTC+1
         var timezone = new Date().getTimezoneOffset();
-
-        var unixTimestamp = new Date(timestamp).getTime();
+        timestamp = addMinutes(new Date(timestamp), -(timezone + 60));
+        //console.log(timezone);
+        var unixTimestamp = timestamp.getTime();
         var timeElapsed = Date.now() - unixTimestamp;
         var timeElapsedSeconds = Math.floor(timeElapsed / 1000);
         var timeElapsedMinutes = Math.floor(timeElapsedSeconds / 60);
@@ -183,6 +194,15 @@ function update_data() {
             lastHeard = JSON.parse(lastHeard);
 
             for (const x in lastHeard) {
+              //Filter out heard stations with same callsign and grid square
+              if (
+                lastHeard[x]["callsign"].split("-", 1)[0] ==
+                  callsign.split("-", 1)[0] &&
+                (lastHeard[x]["grid"].toLowerCase() ==
+                  gridsquare.toLowerCase() ||
+                  lastHeard[x]["grid"] == "------")
+              )
+                continue;
               try {
                 var latlon_dx = gridSquareToLatLon(lastHeard[x]["grid"]);
                 var dist_KM = Math.round(
@@ -209,13 +229,13 @@ function update_data() {
                 var dist_KM = "------";
                 var dist_NM = "------";
               }
-
+              //Recorded as UTC
               var timestampLastHeard = new Date(
                 lastHeard[x]["timestamp"]
               ).getTime();
               var formattedTime = new Date(
                 timestampLastHeard * 1000
-              ).toLocaleTimeString("en-US");
+              ).toLocaleTimeString(locale);
 
               if (x < 10) {
                 var pointA = new L.LatLng(latlon[0], latlon[1]);
@@ -259,7 +279,11 @@ function update_data() {
                 }
 
                 // draw only if callsign list contains callsign of heard station
-                if (callsign_list.includes(lastHeard[x]["callsign"])) {
+                //and distance > 0 to prevent phantom lines
+                if (
+                  dist_KM > 0 &&
+                  callsign_list.includes(lastHeard[x]["callsign"])
+                ) {
                   var polyline = L.polyline(latlngs, {
                     color: LineColor,
                     weight: 2,
@@ -285,7 +309,7 @@ function update_data() {
         }
 
         var popup = `<b>${callsign}</b> ( ${gridsquare} )<br>
-			${timestamp} / (${timeElapsedMinutes} min ago)
+			${timestamp.toLocaleString(locale)} / (${timeElapsedMinutes} min ago)
 			<hr>
 			<b>Frequency: </b>${frequency} Hz / ${band}<br> 
 			<b>Bandwidth: </b>${bandwidth} Hz<br> 	
