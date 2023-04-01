@@ -102,6 +102,16 @@ function addMinutes(date, minutes) {
   return date;
 }
 
+//https://stackoverflow.com/questions/11887934/how-to-check-if-dst-daylight-saving-time-is-in-effect-and-if-so-the-offset
+Date.prototype.stdTimezoneOffset = function () {
+    var jan = new Date(this.getFullYear(), 0, 1);
+    var jul = new Date(this.getFullYear(), 6, 1);
+    return Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset());
+}
+Date.prototype.isDstObserved = function () {
+    return this.getTimezoneOffset() < this.stdTimezoneOffset();
+}
+
 function update_data() {
   $.getJSON({
     url: "https://api.freedata.app/explorer.php",
@@ -112,6 +122,7 @@ function update_data() {
     },
     success: function (data) {
       var callsign_list = [];
+      var gridsquare_list = [];
       Marker10m.clearLayers();
       Marker12m.clearLayers();
       Marker15m.clearLayers();
@@ -129,16 +140,25 @@ function update_data() {
       // we want to check against this later, so we can be sure we are
       // only creating polylines between callsigns who enabled explorer sharing
       for (var i = 0; i < data.length; i++) {
-        var callsign = data[i]["callsign"];
-        callsign_list.push(callsign);
+        //var callsign = data[i]["callsign"];
+        callsign_list.push(data[i]["callsign"]);
+        gridsquare_list.push(data[i]["gridsquare"].toUpperCase());
       }
-      console.log(callsign_list);
+      //console.log(callsign_list);
+      //console.log(gridsquare_list);
 
       //Get locale from browser for properly formatted date/time stamps
       var locale = navigator.language;
 
+      //Determine if DST is active and adjust offset if active
+      var dstOffset = 60;
+      var today = new Date();
+      if (today.isDstObserved()) { 
+        dstOffset += 60;
+      }
+
       for (var i = 0; i < data.length; i++) {
-        console.log(data[i]);
+        //console.log(data[i]);
         var callsign = data[i]["callsign"];
         var timestamp = data[i]["timestamp"];
         var strength = data[i]["strength"];
@@ -168,7 +188,7 @@ function update_data() {
         }
         //Seems to be UTC+1
         var timezone = new Date().getTimezoneOffset();
-        timestamp = addMinutes(new Date(timestamp), -(timezone + 60));
+        timestamp = addMinutes(new Date(timestamp), -(timezone + dstOffset));
         //console.log(timezone);
         var unixTimestamp = timestamp.getTime();
         var timeElapsed = Date.now() - unixTimestamp;
@@ -204,6 +224,14 @@ function update_data() {
               )
                 continue;
               try {
+                //If lastheard grid is ------ look the grid up in gridsquare list
+                if (lastHeard[x]["grid"] == "------")
+                {
+                  let index = callsign_list.indexOf(lastHeard[x]["callsign"]);
+                  //console.log("Found index " + index + " for " + lastHeard[x]["callsign"])
+                  if (index > -1)
+                    lastHeard[x]["grid"] = gridsquare_list[index];
+                }
                 var latlon_dx = gridSquareToLatLon(lastHeard[x]["grid"]);
                 var dist_KM = Math.round(
                   distance(
