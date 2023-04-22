@@ -348,7 +348,7 @@ function update_data() {
 			<b>Frequency: </b>${frequency} Hz / ${band}<br> 
 			<b>Bandwidth: </b>${bandwidth} Hz<br> 	
 			<b>Beacon: </b>${beacon}<br> 
-			<b>Strength: </b>${strength}<br> 
+			<b>Local noise: </b>${strength}<br> 
 			<b>Version: </b>${version}
 			<hr>
 			<b>Last heard: </b><br> 
