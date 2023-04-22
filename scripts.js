@@ -263,7 +263,7 @@ function update_data() {
               ).getTime();
               var formattedTime = new Date(
                 timestampLastHeard * 1000
-              ).toLocaleTimeString(locale);
+              ).toLocaleString(locale);
 
               if (x < 10) {
                 var pointA = new L.LatLng(latlon[0], latlon[1]);
@@ -324,6 +324,7 @@ function update_data() {
 							<tr>
 							  <td>${formattedTime}</td>							  
 							  <td>${lastHeard[x]["callsign"]}</td>
+							  <td>${lastHeard[x]["frequency"]}</td>
 							  <td>${lastHeard[x]["grid"]}</td>
 							  <td>${dist_KM}km / ${dist_NM}nm</td>
 							  <td>${lastHeard[x]["snr"]}dB</td>
