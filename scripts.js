@@ -320,6 +320,14 @@ function update_data() {
                   }).addTo(Lines);
                 }
 
+		let lastHeardFrequency = lastHeard[x]["frequency"];
+		if lastHeardFrequency
+		      if (lastHeardFrequency === undefined) {
+  lastHeardFrequency = "-----"
+} else {
+	lastHeardFrequency = lastHeard[x]["frequency"];
+}
+		      
                 lastHeardTable += `
 							<tr>
 							  <td>${formattedTime}</td>							  
