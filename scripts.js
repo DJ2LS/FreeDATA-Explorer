@@ -321,7 +321,6 @@ function update_data() {
                 }
 
 		let lastHeardFrequency = lastHeard[x]["frequency"];
-		if lastHeardFrequency
 		      if (lastHeardFrequency === undefined) {
   lastHeardFrequency = "-----"
 } else {
