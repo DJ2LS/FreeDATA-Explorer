@@ -104,13 +104,13 @@ function addMinutes(date, minutes) {
 
 //https://stackoverflow.com/questions/11887934/how-to-check-if-dst-daylight-saving-time-is-in-effect-and-if-so-the-offset
 Date.prototype.stdTimezoneOffset = function () {
-    var jan = new Date(this.getFullYear(), 0, 1);
-    var jul = new Date(this.getFullYear(), 6, 1);
-    return Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset());
-}
+  var jan = new Date(this.getFullYear(), 0, 1);
+  var jul = new Date(this.getFullYear(), 6, 1);
+  return Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset());
+};
 Date.prototype.isDstObserved = function () {
-    return this.getTimezoneOffset() < this.stdTimezoneOffset();
-}
+  return this.getTimezoneOffset() < this.stdTimezoneOffset();
+};
 
 function update_data() {
   $.getJSON({
@@ -153,7 +153,7 @@ function update_data() {
       //Determine if DST is active and adjust offset if active
       var dstOffset = 60;
       var today = new Date();
-      if (today.isDstObserved()) { 
+      if (today.isDstObserved()) {
         dstOffset += 60;
       }
 
@@ -225,12 +225,10 @@ function update_data() {
                 continue;
               try {
                 //If lastheard grid is ------ look the grid up in gridsquare list
-                if (lastHeard[x]["grid"] == "------")
-                {
+                if (lastHeard[x]["grid"] == "------") {
                   let index = callsign_list.indexOf(lastHeard[x]["callsign"]);
                   //console.log("Found index " + index + " for " + lastHeard[x]["callsign"])
-                  if (index > -1)
-                    lastHeard[x]["grid"] = gridsquare_list[index];
+                  if (index > -1) lastHeard[x]["grid"] = gridsquare_list[index];
                 }
                 var latlon_dx = gridSquareToLatLon(lastHeard[x]["grid"]);
                 var dist_KM = Math.round(
@@ -320,13 +318,13 @@ function update_data() {
                   }).addTo(Lines);
                 }
 
-		let lastHeardFrequency = lastHeard[x]["frequency"];
-		      if (lastHeardFrequency === undefined) {
-  lastHeardFrequency = "-----"
-} else {
-	lastHeardFrequency = lastHeard[x]["frequency"];
-}
-		      
+                let lastHeardFrequency = lastHeard[x]["frequency"];
+                if (lastHeardFrequency === undefined) {
+                  lastHeardFrequency = "-----";
+                } else {
+                  lastHeardFrequency = lastHeard[x]["frequency"];
+                }
+
                 lastHeardTable += `
 							<tr>
 							  <td>${formattedTime}</td>							  
