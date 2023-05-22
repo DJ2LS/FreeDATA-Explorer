@@ -62,6 +62,7 @@ var terminator = L.terminator({
 }).addTo(map);
 
 var Marker10m = L.layerGroup().addTo(map);
+var Marker11m = L.layerGroup().addTo(map);
 var Marker12m = L.layerGroup().addTo(map);
 var Marker15m = L.layerGroup().addTo(map);
 var Marker17m = L.layerGroup().addTo(map);
@@ -124,6 +125,7 @@ function update_data() {
       var callsign_list = [];
       var gridsquare_list = [];
       Marker10m.clearLayers();
+      Marker11m.clearLayers();
       Marker12m.clearLayers();
       Marker15m.clearLayers();
       Marker17m.clearLayers();
@@ -366,6 +368,12 @@ function update_data() {
             .bindPopup(popup, {
               maxWidth: 560,
             });
+        } else if (frequency >= 27000000 && frequency <= 27900000) {
+          L.marker([latlon[0], latlon[1]], { icon: iconColor })
+            .addTo(Marker11m)
+            .bindPopup(popup, {
+              maxWidth: 560,
+            });
         } else if (frequency >= 24000000 && frequency <= 24500000) {
           L.marker([latlon[0], latlon[1]], { icon: iconColor })
             .addTo(Marker12m)
@@ -443,6 +451,15 @@ enableFilterButton10m.addEventListener("change", function () {
     map.addLayer(Marker10m);
   } else {
     map.removeLayer(Marker10m);
+  }
+});
+
+var enableFilterButton11m = document.getElementById("enable-filter-11m");
+enableFilterButton11m.addEventListener("change", function () {
+  if (enableFilterButton11m.checked) {
+    map.addLayer(Marker11m);
+  } else {
+    map.removeLayer(Marker11m);
   }
 });
 
