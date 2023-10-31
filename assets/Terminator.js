@@ -99,11 +99,11 @@
        * degrees as well. */
       var alpha =
         Math.atan(
-          Math.cos(eclObliq * this._D2R) * Math.tan(sunEclLng * this._D2R)
+          Math.cos(eclObliq * this._D2R) * Math.tan(sunEclLng * this._D2R),
         ) * this._R2D;
       var delta =
         Math.asin(
-          Math.sin(eclObliq * this._D2R) * Math.sin(sunEclLng * this._D2R)
+          Math.sin(eclObliq * this._D2R) * Math.sin(sunEclLng * this._D2R),
         ) * this._R2D;
 
       var lQuadrant = Math.floor(sunEclLng / 90) * 90;
@@ -125,7 +125,7 @@
        * latitude of the terminator in degrees. */
       var lat =
         Math.atan(
-          -Math.cos(ha * this._D2R) / Math.tan(sunPos.delta * this._D2R)
+          -Math.cos(ha * this._D2R) / Math.tan(sunPos.delta * this._D2R),
         ) * this._R2D;
       return lat;
     },

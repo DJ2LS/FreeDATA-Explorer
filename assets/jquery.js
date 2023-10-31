@@ -100,7 +100,7 @@
         return this.pushStack(
           S.map(this, function (e, t) {
             return n.call(e, t, e);
-          })
+          }),
         );
       },
       slice: function () {
@@ -116,14 +116,14 @@
         return this.pushStack(
           S.grep(this, function (e, t) {
             return (t + 1) % 2;
-          })
+          }),
         );
       },
       odd: function () {
         return this.pushStack(
           S.grep(this, function (e, t) {
             return t % 2;
-          })
+          }),
         );
       },
       eq: function (e) {
@@ -248,11 +248,11 @@
     "function" == typeof Symbol && (S.fn[Symbol.iterator] = t[Symbol.iterator]),
     S.each(
       "Boolean Number String Function Array Date RegExp Object Error Symbol".split(
-        " "
+        " ",
       ),
       function (e, t) {
         n["[object " + t + "]"] = t.toLowerCase();
-      }
+      },
     );
   var d = (function (n) {
     var e,
@@ -345,7 +345,7 @@
             "*(\\d+)|))" +
             M +
             "*\\)|)",
-          "i"
+          "i",
         ),
         bool: new RegExp("^(?:" + R + ")$", "i"),
         needsContext: new RegExp(
@@ -356,7 +356,7 @@
             "*((?:-\\d)?\\d*)" +
             M +
             "*\\)|)(?=[^-]|$)",
-          "i"
+          "i",
         ),
       },
       Y = /HTML$/i,
@@ -393,7 +393,7 @@
         function (e) {
           return !0 === e.disabled && "fieldset" === e.nodeName.toLowerCase();
         },
-        { dir: "parentNode", next: "legend" }
+        { dir: "parentNode", next: "legend" },
       );
     try {
       H.apply((t = O.call(p.childNodes)), p.childNodes),
@@ -707,7 +707,7 @@
                 a.webkitMatchesSelector ||
                 a.mozMatchesSelector ||
                 a.oMatchesSelector ||
-                a.msMatchesSelector)
+                a.msMatchesSelector),
             )) &&
               ce(function (e) {
                 (d.disconnectedMatch = c.call(e, "*")),
@@ -947,7 +947,7 @@
                     ("string" == typeof e.className && e.className) ||
                       ("undefined" != typeof e.getAttribute &&
                         e.getAttribute("class")) ||
-                      ""
+                      "",
                   );
                 }))
             );
@@ -1298,7 +1298,9 @@
                   -1 < (i = v ? P(e, a) : s[o]) &&
                   (e[i] = !(t[i] = a));
             }
-          } else (p = Te(p === t ? p.splice(l, p.length) : p)), v ? v(null, t, p, r) : H.apply(t, p);
+          } else
+            (p = Te(p === t ? p.splice(l, p.length) : p)),
+              v ? v(null, t, p, r) : H.apply(t, p);
         })
       );
     }
@@ -1316,14 +1318,14 @@
               return e === i;
             },
             a,
-            !0
+            !0,
           ),
           l = be(
             function (e) {
               return -1 < P(i, e);
             },
             a,
-            !0
+            !0,
           ),
           c = [
             function (e, t, n) {
@@ -1346,12 +1348,12 @@
                 xe(
                   e
                     .slice(0, s - 1)
-                    .concat({ value: " " === e[s - 2].type ? "*" : "" })
+                    .concat({ value: " " === e[s - 2].type ? "*" : "" }),
                 ).replace(B, "$1"),
               t,
               s < n && Ee(e.slice(s, n)),
               n < r && Ee((e = e.slice(n))),
-              n < r && xe(e)
+              n < r && xe(e),
             );
           }
           c.push(t);
@@ -1454,7 +1456,7 @@
                 }
                 return i && ((k = h), (w = p)), c;
               }),
-              m ? le(r) : r)
+              m ? le(r) : r),
             )).selector = e;
           }
           return a;
@@ -1487,7 +1489,7 @@
                 (u = b.find[s]) &&
                 (r = u(
                   a.matches[0].replace(te, ne),
-                  (ee.test(o[0].type) && ve(t.parentNode)) || t
+                  (ee.test(o[0].type) && ve(t.parentNode)) || t,
                 ))
               ) {
                 if ((o.splice(i, 1), !(e = r.length && xe(o))))
@@ -1502,7 +1504,7 @@
               t,
               !E,
               n,
-              !t || (ee.test(e) && ve(t.parentNode)) || t
+              !t || (ee.test(e) && ve(t.parentNode)) || t,
             ),
             n
           );
@@ -1603,7 +1605,7 @@
             e,
             S.grep(t, function (e) {
               return 1 === e.nodeType;
-            })
+            }),
           )
     );
   }),
@@ -1617,7 +1619,7 @@
           return this.pushStack(
             S(e).filter(function () {
               for (t = 0; t < r; t++) if (S.contains(i[t], this)) return !0;
-            })
+            }),
           );
         for (n = this.pushStack([]), t = 0; t < r; t++) S.find(e, i[t], n);
         return 1 < r ? S.uniqueSort(n) : n;
@@ -1652,7 +1654,7 @@
           ((t = t instanceof S ? t[0] : t),
           S.merge(
             this,
-            S.parseHTML(r[1], t && t.nodeType ? t.ownerDocument || t : E, !0)
+            S.parseHTML(r[1], t && t.nodeType ? t.ownerDocument || t : E, !0),
           ),
           N.test(r[1]) && S.isPlainObject(t))
         )
@@ -1776,7 +1778,7 @@
             this.pushStack(n)
           );
         };
-      }
+      },
     );
   var P = /[^\x20\t\r\n\f]+/g;
   function R(e) {
@@ -1967,7 +1969,7 @@
                                   e,
                                   l(u, o, R, s),
                                   l(u, o, M, s),
-                                  l(u, o, R, o.notifyWith)
+                                  l(u, o, R, o.notifyWith),
                                 ))
                             : (a !== R && ((n = void 0), (r = [e])),
                               (s || o.resolveWith)(n, r));
@@ -2017,7 +2019,7 @@
                   o[3 - e][2].disable,
                   o[3 - e][3].disable,
                   o[0][2].lock,
-                  o[0][3].lock
+                  o[0][3].lock,
                 ),
               n.add(t[3].fire),
               (s[t[0]] = function () {
@@ -2275,7 +2277,7 @@
               e,
               1 < arguments.length,
               null,
-              !0
+              !0,
             );
       },
       removeData: function (e) {
@@ -2313,7 +2315,7 @@
               function () {
                 S.dequeue(e, t);
               },
-              o
+              o,
             )),
           !r && o && o.empty.fire();
       },
@@ -2622,7 +2624,7 @@
                   value: S.event.trigger(
                     S.extend(r[0], S.Event.prototype),
                     r.slice(1),
-                    this
+                    this,
                   ),
                 }),
                 e.stopImmediatePropagation());
@@ -2676,7 +2678,7 @@
                   needsContext: i && S.expr.match.needsContext.test(i),
                   namespace: h.join("."),
                 },
-                o
+                o,
               )),
               (p = u[d]) ||
                 (((p = u[d] = []).delegateCount = 0),
@@ -2933,7 +2935,7 @@
         touches: !0,
         which: !0,
       },
-      S.event.addProp
+      S.event.addProp,
     ),
     S.each({ focus: "focusin", blur: "focusout" }, function (t, e) {
       S.event.special[t] = {
@@ -2973,7 +2975,7 @@
             );
           },
         };
-      }
+      },
     ),
     S.fn.extend({
       on: function (e, t, n, r) {
@@ -2990,7 +2992,7 @@
             S(e.delegateTarget).off(
               r.namespace ? r.origType + "." + r.namespace : r.origType,
               r.selector,
-              r.handler
+              r.handler,
             ),
             this
           );
@@ -3079,7 +3081,7 @@
                   S._evalUrl(
                     u.src,
                     { nonce: u.nonce || u.getAttribute("nonce") },
-                    l
+                    l,
                   )
                 : b(u.textContent.replace(Ne, ""), u, l));
     }
@@ -3165,7 +3167,7 @@
           },
           null,
           e,
-          arguments.length
+          arguments.length,
         );
       },
       append: function () {
@@ -3237,7 +3239,7 @@
           },
           null,
           e,
-          arguments.length
+          arguments.length,
         );
       },
       replaceWith: function () {
@@ -3250,7 +3252,7 @@
             S.inArray(this, n) < 0 &&
               (S.cleanData(ye(this)), t && t.replaceChild(e, this));
           },
-          n
+          n,
         );
       },
     }),
@@ -3270,7 +3272,7 @@
               u.apply(n, t.get());
           return this.pushStack(n);
         };
-      }
+      },
     );
   var Pe = new RegExp("^(" + ee + ")(?!px)[a-z%]+$", "i"),
     Re = /^--/,
@@ -3446,8 +3448,8 @@
           Math.max(
             0,
             Math.ceil(
-              e["offset" + t[0].toUpperCase() + t.slice(1)] - o - u - s - 0.5
-            )
+              e["offset" + t[0].toUpperCase() + t.slice(1)] - o - u - s - 0.5,
+            ),
           ) || 0),
       u
     );
@@ -3585,7 +3587,7 @@
                 e["offset" + u[0].toUpperCase() + u.slice(1)] -
                   parseFloat(i[u]) -
                   Ke(e, u, "border", !1, i) -
-                  0.5
+                  0.5,
               )),
             s &&
               (r = te.exec(t)) &&
@@ -3638,7 +3640,7 @@
           },
           e,
           t,
-          1 < arguments.length
+          1 < arguments.length,
         );
       },
     }),
@@ -3668,7 +3670,7 @@
                   this.options.duration * e,
                   0,
                   1,
-                  this.options.duration
+                  this.options.duration,
                 ))
             : (this.pos = t = e),
           (this.now = (this.end - this.start) * t + this.start),
@@ -3798,7 +3800,7 @@
             l.opts,
             e,
             t,
-            l.opts.specialEasing[e] || l.opts.easing
+            l.opts.specialEasing[e] || l.opts.easing,
           );
           return l.tweens.push(n), n;
         },
@@ -4073,7 +4075,7 @@
         S.fn[e] = function (e, t, n) {
           return this.animate(r, e, t, n);
         };
-      }
+      },
     ),
     (S.timers = []),
     (S.fx.tick = function () {
@@ -4268,7 +4270,7 @@
       ],
       function () {
         S.propFix[this.toLowerCase()] = this;
-      }
+      },
     ),
     S.fn.extend({
       addClass: function (t) {
@@ -4339,7 +4341,7 @@
                   this.setAttribute &&
                     this.setAttribute(
                       "class",
-                      r || !1 === t ? "" : Y.get(this, "__className__") || ""
+                      r || !1 === t ? "" : Y.get(this, "__className__") || "",
                     ));
             }));
       },
@@ -4583,7 +4585,7 @@
               ? S.map(n.childNodes, function (e) {
                   return e.textContent;
                 }).join("\n")
-              : e)
+              : e),
         ),
       t
     );
@@ -4602,7 +4604,7 @@
               n + "[" + ("object" == typeof t && null != t ? e : "") + "]",
               t,
               r,
-              i
+              i,
             );
       });
     else if (r || "object" !== w(e)) i(n, e);
@@ -4716,7 +4718,7 @@
         type: "GET",
         isLocal:
           /^(?:about|app|app-storage|.+-extension|file|res|widget):$/.test(
-            Tt.protocol
+            Tt.protocol,
           ),
         global: !0,
         processData: !0,
@@ -4815,7 +4817,7 @@
           (x.promise(T),
           (y.url = ((e || y.url || Tt.href) + "").replace(
             Pt,
-            Tt.protocol + "//"
+            Tt.protocol + "//",
           )),
           (y.type = t.method || t.type || y.method || y.type),
           (y.dataTypes = (y.dataType || "*").toLowerCase().match(P) || [""]),
@@ -4851,7 +4853,7 @@
             y.processData &&
             0 ===
               (y.contentType || "").indexOf(
-                "application/x-www-form-urlencoded"
+                "application/x-www-form-urlencoded",
               ) &&
             (y.data = y.data.replace(Dt, "+"))
           : ((o = y.url.slice(f.length)),
@@ -4873,7 +4875,7 @@
           y.dataTypes[0] && y.accepts[y.dataTypes[0]]
             ? y.accepts[y.dataTypes[0]] +
                 ("*" !== y.dataTypes[0] ? ", " + It + "; q=0.01" : "")
-            : y.accepts["*"]
+            : y.accepts["*"],
         ),
         y.headers))
           T.setRequestHeader(i, y.headers[i]);
@@ -5034,8 +5036,8 @@
           S.ajax(
             S.extend(
               { url: e, type: i, dataType: r, data: t, success: n },
-              S.isPlainObject(e) && e
-            )
+              S.isPlainObject(e) && e,
+            ),
           )
         );
       };
@@ -5165,7 +5167,7 @@
                           "string" != typeof r.responseText
                           ? { binary: r.response }
                           : { text: r.responseText },
-                        r.getAllResponseHeaders()
+                        r.getAllResponseHeaders(),
                       ));
               };
             }),
@@ -5223,7 +5225,7 @@
                   r.remove(),
                     (i = null),
                     e && t("error" === e.type ? 404 : 200, e.type);
-                })
+                }),
               )),
               E.head.appendChild(r[0]);
           },
@@ -5253,7 +5255,7 @@
             : "string" == typeof e.data &&
               0 ===
                 (e.contentType || "").indexOf(
-                  "application/x-www-form-urlencoded"
+                  "application/x-www-form-urlencoded",
                 ) &&
               Vt.test(e.data) &&
               "data");
@@ -5294,7 +5296,7 @@
             (v.createHTMLDocument
               ? (((r = (t =
                   E.implementation.createHTMLDocument("")).createElement(
-                  "base"
+                  "base",
                 )).href = E.location.href),
                 t.head.appendChild(r))
               : (t = E)),
@@ -5329,7 +5331,7 @@
                   a.each(function () {
                     n.apply(this, o || [e.responseText, t, e]);
                   });
-                }
+                },
             ),
         this
       );
@@ -5440,10 +5442,10 @@
             },
             t,
             e,
-            arguments.length
+            arguments.length,
           );
         };
-      }
+      },
     ),
     S.each(["top", "left"], function (e, n) {
       S.cssHooks[n] = _e(v.pixelPosition, function (e, t) {
@@ -5473,7 +5475,7 @@
                       r["scroll" + a],
                       e.body["offset" + a],
                       r["offset" + a],
-                      r["client" + a]
+                      r["client" + a],
                     ))
                   : void 0 === n
                   ? S.css(e, t, i)
@@ -5481,10 +5483,10 @@
               },
               s,
               n ? e : void 0,
-              n
+              n,
             );
           };
-        }
+        },
       );
     }),
     S.each(
@@ -5500,7 +5502,7 @@
         S.fn[t] = function (e) {
           return this.on(t, e);
         };
-      }
+      },
     ),
     S.fn.extend({
       bind: function (e, t, n) {
@@ -5523,7 +5525,7 @@
     }),
     S.each(
       "blur focus focusin focusout resize scroll click dblclick mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave change select submit keydown keypress keyup contextmenu".split(
-        " "
+        " ",
       ),
       function (e, n) {
         S.fn[n] = function (e, t) {
@@ -5531,7 +5533,7 @@
             ? this.on(n, null, e, t)
             : this.trigger(n);
         };
-      }
+      },
     );
   var Gt = /^[\s\uFEFF\xA0]+|([^\s\uFEFF\xA0])[\s\uFEFF\xA0]+$/g;
   (S.proxy = function (e, t) {

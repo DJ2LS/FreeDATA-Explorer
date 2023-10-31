@@ -176,7 +176,7 @@ testGridSquare = function () {
         " expected= " +
         testData[i][2] +
         " passed = " +
-        thisPassed
+        thisPassed,
     );
     totalPassed += thisPassed;
   }

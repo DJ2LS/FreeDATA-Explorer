@@ -139,10 +139,9 @@ function update_data() {
       var today = new Date();
       //Timestamps are Europe/Berlin; determine offset for proper
       //conversion to UTC and then to user's local timezone
-      var deOffset =  getTimezoneOffset("Europe/Berlin",today);
+      var deOffset = getTimezoneOffset("Europe/Berlin", today);
       var isoSuffix = " UTC+2";
-      if (deOffset == 60)
-        isoSuffix=" UTC+1";
+      if (deOffset == 60) isoSuffix = " UTC+1";
 
       //Sort so newest is on bottom to ensure new pins overlap old pins
       data = data.sort(sortByProperty("timestamp"));
@@ -176,8 +175,8 @@ function update_data() {
           console.log(e);
           var latlon = [0.0, 0.0];
         }
-          timestamp = new Date(timestamp);
-          var timeElapsed = Date.now() - timestamp.getTime();
+        timestamp = new Date(timestamp);
+        var timeElapsed = Date.now() - timestamp.getTime();
         var timeElapsedSeconds = Math.floor(timeElapsed / 1000);
         var timeElapsedMinutes = Math.floor(timeElapsedSeconds / 60);
 
@@ -197,9 +196,9 @@ function update_data() {
         var lastHeard = data[i]["lastheard"];
         if (lastHeard !== "" && lastHeard !== "null") {
           try {
-              lastHeard = JSON.parse(lastHeard);
-              //sort heard list by newest first
-              lastheard = lastHeard.sort(sortByPropertyDesc("timestamp"));
+            lastHeard = JSON.parse(lastHeard);
+            //sort heard list by newest first
+            lastheard = lastHeard.sort(sortByPropertyDesc("timestamp"));
             for (const x in lastHeard) {
               //Filter out heard stations with same callsign and grid square
               if (
@@ -224,8 +223,8 @@ function update_data() {
                     latlon[1],
                     latlon_dx[0],
                     latlon_dx[1],
-                    "K"
-                  )
+                    "K",
+                  ),
                 );
                 var dist_NM = Math.round(
                   distance(
@@ -233,8 +232,8 @@ function update_data() {
                     latlon[1],
                     latlon_dx[0],
                     latlon_dx[1],
-                    "N"
-                  )
+                    "N",
+                  ),
                 );
               } catch (e) {
                 console.log(e);
@@ -244,10 +243,10 @@ function update_data() {
               }
               //Recorded as UTC
               var timestampLastHeard = new Date(
-                lastHeard[x]["timestamp"]
+                lastHeard[x]["timestamp"],
               ).getTime();
               var formattedTime = new Date(
-                timestampLastHeard * 1000
+                timestampLastHeard * 1000,
               ).toLocaleString(locale);
 
               if (x < 10) {
@@ -426,30 +425,34 @@ function update_data() {
 }
 
 const getTimezoneOffset = (timeZone, date = new Date()) => {
-  const tz = date.toLocaleString("en", {timeZone, timeStyle: "long"}).split(" ").slice(-1)[0];
+  const tz = date
+    .toLocaleString("en", { timeZone, timeStyle: "long" })
+    .split(" ")
+    .slice(-1)[0];
   const dateString = date.toString();
-  const offset = Date.parse(`${dateString} UTC`) - Date.parse(`${dateString} ${tz}`);
-  
+  const offset =
+    Date.parse(`${dateString} UTC`) - Date.parse(`${dateString} ${tz}`);
+
   // return UTC offset in minutes
-  return offset/1000/60;
-}
+  return offset / 1000 / 60;
+};
 
 //https://medium.com/@asadise/sorting-a-json-array-according-one-property-in-javascript-18b1d22cd9e9
 function sortByProperty(property) {
-    return function (a, b) {
-        if (a[property] > b[property]) return 1;
-        else if (a[property] < b[property]) return -1;
+  return function (a, b) {
+    if (a[property] > b[property]) return 1;
+    else if (a[property] < b[property]) return -1;
 
-        return 0;
-    };
+    return 0;
+  };
 }
 function sortByPropertyDesc(property) {
-    return function (a, b) {
-        if (a[property] < b[property]) return 1;
-        else if (a[property] > b[property]) return -1;
+  return function (a, b) {
+    if (a[property] < b[property]) return 1;
+    else if (a[property] > b[property]) return -1;
 
-        return 0;
-    };
+    return 0;
+  };
 }
 // set map refresh interval
 setInterval(function () {
