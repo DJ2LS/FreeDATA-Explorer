@@ -155,7 +155,7 @@ function update_data() {
         var callsign = data[i]["callsign"];
         var stimestamp = data[i]["timestamp"];
         var strength = data[i]["strength"];
-        var frequency = parseInt(data[i]["frequency"]);
+        var frequency = parseInt(data[i]["frequency"]) / 1000;
         var band = data[i]["band"];
         var version = data[i]["version"];
         var bandwidth = data[i]["bandwidth"];
@@ -325,7 +325,7 @@ function update_data() {
 							<tr>
 							  <td>${formattedTime}</td>							  
 							  <td>${lastHeard[x]["callsign"]}</td>
-							  <td>${lastHeardFrequency}</td>
+							  <td>${lastHeardFrequency/1000} kHz</td>
 							  <td>${lastHeard[x]["grid"]}</td>
 							  <td>${dist_KM}km / ${dist_NM}nm</td>
 							  <td>${lastHeard[x]["snr"]}dB</td>
@@ -341,7 +341,7 @@ function update_data() {
         var popup = `<b>${callsign}</b> ( ${gridsquare} )<br>
 			${timestamp.toLocaleString(locale)} / (${timeElapsedMinutes} min ago)
 			<hr>
-			<b>Frequency: </b>${frequency} Hz / ${band}<br> 
+			<b>Frequency: </b>${frequency} kHz / ${band}<br> 
 			<b>Bandwidth: </b>${bandwidth} Hz<br> 	
 			<b>Beacon: </b>${beacon}<br> 
 			<b>Local noise: </b>${strength}<br> 
