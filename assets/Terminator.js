@@ -2,8 +2,9 @@
   typeof exports === "object" && typeof module !== "undefined"
     ? (module.exports = factory(require("leaflet")))
     : typeof define === "function" && define.amd
-    ? define(["leaflet"], factory)
-    : ((global.L = global.L || {}), (global.L.terminator = factory(global.L)));
+      ? define(["leaflet"], factory)
+      : ((global.L = global.L || {}),
+        (global.L.terminator = factory(global.L)));
 })(this, function (L) {
   "use strict";
 

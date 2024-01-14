@@ -6,12 +6,12 @@
   "object" == typeof exports && "undefined" != typeof module
     ? e(exports)
     : "function" == typeof define && define.amd
-    ? define(["exports"], e)
-    : e(
-        ((t =
-          "undefined" != typeof globalThis ? globalThis : t || self).leaflet =
-          {}),
-      );
+      ? define(["exports"], e)
+      : e(
+          ((t =
+            "undefined" != typeof globalThis ? globalThis : t || self).leaflet =
+            {}),
+        );
 })(this, function (t) {
   "use strict";
   function l(t) {
@@ -369,12 +369,12 @@
     return t instanceof p
       ? t
       : d(t)
-      ? new p(t[0], t[1])
-      : null == t
-      ? t
-      : "object" == typeof t && "x" in t && "y" in t
-      ? new p(t.x, t.y)
-      : new p(t, e, i);
+        ? new p(t[0], t[1])
+        : null == t
+          ? t
+          : "object" == typeof t && "x" in t && "y" in t
+            ? new p(t.x, t.y)
+            : new p(t, e, i);
   }
   function f(t, e) {
     if (t)
@@ -401,18 +401,18 @@
     return t instanceof v
       ? t
       : d(t) && "object" != typeof t[0]
-      ? 3 === t.length
-        ? new v(t[0], t[1], t[2])
-        : 2 === t.length
-        ? new v(t[0], t[1])
-        : null
-      : null == t
-      ? t
-      : "object" == typeof t && "lat" in t
-      ? new v(t.lat, "lng" in t ? t.lng : t.lon, t.alt)
-      : void 0 === e
-      ? null
-      : new v(t, e, i);
+        ? 3 === t.length
+          ? new v(t[0], t[1], t[2])
+          : 2 === t.length
+            ? new v(t[0], t[1])
+            : null
+        : null == t
+          ? t
+          : "object" == typeof t && "lat" in t
+            ? new v(t.lat, "lng" in t ? t.lng : t.lon, t.alt)
+            : void 0 === e
+              ? null
+              : new v(t, e, i);
   }
   (p.prototype = {
     clone: function () {
@@ -1085,8 +1085,8 @@
         (i && "auto" !== i) || !document.defaultView
           ? i
           : (t = document.defaultView.getComputedStyle(t, null))
-          ? t[e]
-          : null)
+            ? t[e]
+            : null)
       ? null
       : i;
   }
@@ -1311,27 +1311,27 @@
       !b.touchNative && b.pointer && 0 === t.indexOf("touch")
         ? (o = Jt(e, t, o))
         : b.touch && "dblclick" === t
-        ? (o = ne(e, o))
-        : "addEventListener" in e
-        ? "touchstart" === t ||
-          "touchmove" === t ||
-          "wheel" === t ||
-          "mousewheel" === t
-          ? e.addEventListener(
-              Ee[t] || t,
-              o,
-              !!b.passiveEvents && { passive: !1 },
-            )
-          : "mouseenter" === t || "mouseleave" === t
-          ? e.addEventListener(
-              Ee[t],
-              (o = function (t) {
-                (t = t || window.event), Fe(e, t) && s(t);
-              }),
-              !1,
-            )
-          : e.addEventListener(t, s, !1)
-        : e.attachEvent("on" + t, o),
+          ? (o = ne(e, o))
+          : "addEventListener" in e
+            ? "touchstart" === t ||
+              "touchmove" === t ||
+              "wheel" === t ||
+              "mousewheel" === t
+              ? e.addEventListener(
+                  Ee[t] || t,
+                  o,
+                  !!b.passiveEvents && { passive: !1 },
+                )
+              : "mouseenter" === t || "mouseleave" === t
+                ? e.addEventListener(
+                    Ee[t],
+                    (o = function (t) {
+                      (t = t || window.event), Fe(e, t) && s(t);
+                    }),
+                    !1,
+                  )
+                : e.addEventListener(t, s, !1)
+            : e.attachEvent("on" + t, o),
       (e[E] = e[E] || {}),
       (e[E][r] = o));
   }
@@ -1348,12 +1348,12 @@
             ? n.removeEventListener(Gt[s], r, !1)
             : console.warn("wrong event specified:", s))
         : b.touch && "dblclick" === e
-        ? ((n = i),
-          (r = t).removeEventListener("dblclick", n.dblclick),
-          r.removeEventListener("click", n.simDblclick))
-        : "removeEventListener" in t
-        ? t.removeEventListener(Ee[e] || e, i, !1)
-        : t.detachEvent("on" + e, i),
+          ? ((n = i),
+            (r = t).removeEventListener("dblclick", n.dblclick),
+            r.removeEventListener("click", n.simDblclick))
+          : "removeEventListener" in t
+            ? t.removeEventListener(Ee[e] || e, i, !1)
+            : t.detachEvent("on" + e, i),
       (t[E][o] = null));
   }
   function Be(t) {
@@ -1361,8 +1361,8 @@
       t.stopPropagation
         ? t.stopPropagation()
         : t.originalEvent
-        ? (t.originalEvent._stopped = !0)
-        : (t.cancelBubble = !0),
+          ? (t.originalEvent._stopped = !0)
+          : (t.cancelBubble = !0),
       this
     );
   }
@@ -1401,28 +1401,28 @@
     b.linux && b.chrome
       ? window.devicePixelRatio
       : b.mac
-      ? 3 * window.devicePixelRatio
-      : 0 < window.devicePixelRatio
-      ? 2 * window.devicePixelRatio
-      : 1;
+        ? 3 * window.devicePixelRatio
+        : 0 < window.devicePixelRatio
+          ? 2 * window.devicePixelRatio
+          : 1;
   function He(t) {
     return b.edge
       ? t.wheelDeltaY / 2
       : t.deltaY && 0 === t.deltaMode
-      ? -t.deltaY / je
-      : t.deltaY && 1 === t.deltaMode
-      ? 20 * -t.deltaY
-      : t.deltaY && 2 === t.deltaMode
-      ? 60 * -t.deltaY
-      : t.deltaX || t.deltaZ
-      ? 0
-      : t.wheelDelta
-      ? (t.wheelDeltaY || t.wheelDelta) / 2
-      : t.detail && Math.abs(t.detail) < 32765
-      ? 20 * -t.detail
-      : t.detail
-      ? (t.detail / -32765) * 60
-      : 0;
+        ? -t.deltaY / je
+        : t.deltaY && 1 === t.deltaMode
+          ? 20 * -t.deltaY
+          : t.deltaY && 2 === t.deltaMode
+            ? 60 * -t.deltaY
+            : t.deltaX || t.deltaZ
+              ? 0
+              : t.wheelDelta
+                ? (t.wheelDeltaY || t.wheelDelta) / 2
+                : t.detail && Math.abs(t.detail) < 32765
+                  ? 20 * -t.detail
+                  : t.detail
+                    ? (t.detail / -32765) * 60
+                    : 0;
   }
   function Fe(t, e) {
     var i = e.relatedTarget;
@@ -1834,8 +1834,8 @@
             (1 === e
               ? "permission denied"
               : 2 === e
-              ? "position unavailable"
-              : "timeout")),
+                ? "position unavailable"
+                : "timeout")),
           this._locateOptions.setView && !this._loaded && this.fitWorld(),
           this.fire("locationerror", {
             code: e,
@@ -2698,8 +2698,8 @@
                 ? "overlayadd"
                 : "overlayremove"
               : "add" === t.type
-              ? "baselayerchange"
-              : null;
+                ? "baselayerchange"
+                : null;
           t && this._map.fire(t, e);
         },
         _createRadioElement: function (t, e) {
@@ -3227,10 +3227,10 @@
       8 & i
         ? ((s = t.x + (a * (n.y - t.y)) / e), (r = n.y))
         : 4 & i
-        ? ((s = t.x + (a * (h.y - t.y)) / e), (r = h.y))
-        : 2 & i
-        ? ((s = n.x), (r = t.y + (e * (n.x - t.x)) / a))
-        : 1 & i && ((s = h.x), (r = t.y + (e * (h.x - t.x)) / a)),
+          ? ((s = t.x + (a * (h.y - t.y)) / e), (r = h.y))
+          : 2 & i
+            ? ((s = n.x), (r = t.y + (e * (n.x - t.x)) / a))
+            : 1 & i && ((s = h.x), (r = t.y + (e * (h.x - t.x)) / a)),
       new p(s, r, o)
     );
   }
@@ -3732,8 +3732,8 @@
           (e = this._stripUrl(e))
             ? e
             : (t = document.querySelector('link[href$="leaflet.css"]'))
-            ? t.href.substring(0, t.href.length - "leaflet.css".length - 1)
-            : ""
+              ? t.href.substring(0, t.href.length - "leaflet.css".length - 1)
+              : ""
         );
       },
     }),
@@ -4561,8 +4561,8 @@
                 i
                   ? n.push(t.geometry)
                   : "FeatureCollection" === (t = Ci(t)).type
-                  ? n.push.apply(n, t.features)
-                  : n.push(t));
+                    ? n.push.apply(n, t.features)
+                    : n.push(t));
             }),
             i
               ? zi(this, { geometries: n, type: "GeometryCollection" })
@@ -5132,8 +5132,8 @@
             this._popup._source !== e || e instanceof mi
               ? ((this._popup._source = e), this.openPopup(t.latlng))
               : this._map.hasLayer(this._popup)
-              ? this.closePopup()
-              : this.openPopup(t.latlng));
+                ? this.closePopup()
+                : this.openPopup(t.latlng));
         },
         _movePopup: function (t) {
           this._popup.setLatLng(t.latlng);
@@ -5197,18 +5197,18 @@
               "top" === s
                 ? ((e = r / 2), a)
                 : "bottom" === s
-                ? ((e = r / 2), 0)
-                : ((e =
-                    "center" === s
-                      ? r / 2
-                      : "right" === s
-                      ? 0
-                      : "left" === s
-                      ? r
-                      : i.x < o.x
-                      ? ((s = "right"), 0)
-                      : ((s = "left"), r + 2 * (h.x + l.x))),
-                  a / 2);
+                  ? ((e = r / 2), 0)
+                  : ((e =
+                      "center" === s
+                        ? r / 2
+                        : "right" === s
+                          ? 0
+                          : "left" === s
+                            ? r
+                            : i.x < o.x
+                              ? ((s = "right"), 0)
+                              : ((s = "left"), r + 2 * (h.x + l.x))),
+                    a / 2);
           (t = t
             .subtract(m(e, i, !0))
             .add(h)
@@ -5640,8 +5640,8 @@
       return void 0 !== e.minNativeZoom && t < e.minNativeZoom
         ? e.minNativeZoom
         : void 0 !== e.maxNativeZoom && e.maxNativeZoom < t
-        ? e.maxNativeZoom
-        : t;
+          ? e.maxNativeZoom
+          : t;
     },
     _setView: function (t, e, i, n) {
       var o = Math.round(e),
@@ -5896,8 +5896,8 @@
                 (e.maxZoom = Math.max(e.minZoom, e.maxZoom - 1))),
             (e.minZoom = Math.max(0, e.minZoom)))
           : e.zoomReverse
-          ? (e.minZoom = Math.min(e.maxZoom, e.minZoom))
-          : (e.maxZoom = Math.max(e.minZoom, e.maxZoom)),
+            ? (e.minZoom = Math.min(e.maxZoom, e.minZoom))
+            : (e.maxZoom = Math.max(e.minZoom, e.maxZoom)),
         "string" == typeof e.subdomains &&
           (e.subdomains = e.subdomains.split("")),
         this.on("tileunload", this._onTileRemove);

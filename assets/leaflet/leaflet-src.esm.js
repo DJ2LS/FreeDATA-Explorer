@@ -3100,10 +3100,10 @@ var wheelPxFactor =
   Browser.linux && Browser.chrome
     ? window.devicePixelRatio
     : Browser.mac
-    ? window.devicePixelRatio * 3
-    : window.devicePixelRatio > 0
-    ? 2 * window.devicePixelRatio
-    : 1;
+      ? window.devicePixelRatio * 3
+      : window.devicePixelRatio > 0
+        ? 2 * window.devicePixelRatio
+        : 1;
 // @function getWheelDelta(ev: DOMEvent): Number
 // Gets normalized wheel delta from a wheel DOM event, in vertical
 // pixels scrolled (negative if scrolling down).
@@ -3113,20 +3113,20 @@ function getWheelDelta(e) {
   return Browser.edge
     ? e.wheelDeltaY / 2 // Don't trust window-geometry-based delta
     : e.deltaY && e.deltaMode === 0
-    ? -e.deltaY / wheelPxFactor // Pixels
-    : e.deltaY && e.deltaMode === 1
-    ? -e.deltaY * 20 // Lines
-    : e.deltaY && e.deltaMode === 2
-    ? -e.deltaY * 60 // Pages
-    : e.deltaX || e.deltaZ
-    ? 0 // Skip horizontal/depth wheel events
-    : e.wheelDelta
-    ? (e.wheelDeltaY || e.wheelDelta) / 2 // Legacy IE pixels
-    : e.detail && Math.abs(e.detail) < 32765
-    ? -e.detail * 20 // Legacy Moz lines
-    : e.detail
-    ? (e.detail / -32765) * 60 // Legacy Moz pages
-    : 0;
+      ? -e.deltaY / wheelPxFactor // Pixels
+      : e.deltaY && e.deltaMode === 1
+        ? -e.deltaY * 20 // Lines
+        : e.deltaY && e.deltaMode === 2
+          ? -e.deltaY * 60 // Pages
+          : e.deltaX || e.deltaZ
+            ? 0 // Skip horizontal/depth wheel events
+            : e.wheelDelta
+              ? (e.wheelDeltaY || e.wheelDelta) / 2 // Legacy IE pixels
+              : e.detail && Math.abs(e.detail) < 32765
+                ? -e.detail * 20 // Legacy Moz lines
+                : e.detail
+                  ? (e.detail / -32765) * 60 // Legacy Moz pages
+                  : 0;
 }
 
 // check if element really left/entered the event target (for mouseenter/mouseleave)
@@ -4003,8 +4003,8 @@ var Map = Evented.extend({
         (c === 1
           ? "permission denied"
           : c === 2
-          ? "position unavailable"
-          : "timeout");
+            ? "position unavailable"
+            : "timeout");
 
     if (this._locateOptions.setView && !this._loaded) {
       this.fitWorld();
@@ -5679,8 +5679,8 @@ var Layers = Control.extend({
         ? "overlayadd"
         : "overlayremove"
       : e.type === "add"
-      ? "baselayerchange"
-      : null;
+        ? "baselayerchange"
+        : null;
 
     if (type) {
       this._map.fire(type, obj);

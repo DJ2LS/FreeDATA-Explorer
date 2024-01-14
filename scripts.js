@@ -325,7 +325,7 @@ function update_data() {
 							<tr>
 							  <td>${formattedTime}</td>							  
 							  <td>${lastHeard[x]["callsign"]}</td>
-							  <td>${lastHeardFrequency/1000} kHz</td>
+							  <td>${lastHeardFrequency / 1000} kHz</td>
 							  <td>${lastHeard[x]["grid"]}</td>
 							  <td>${dist_KM}km / ${dist_NM}nm</td>
 							  <td>${lastHeard[x]["snr"]}dB</td>
