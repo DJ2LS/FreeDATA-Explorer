@@ -140,7 +140,7 @@ function update_data() {
 
       //Get locale from browser for properly formatted date/time stamps
       var locale = navigator.language;
-      
+
       //Timestamps from API are Europe/Berlin; determine offset for proper conversion
       var deOffset = getTZOffset("Europe/Berlin", new Date());
 
@@ -435,14 +435,16 @@ function update_data() {
 }
 
 const getTZOffset = (timeZone, date = new Date()) => {
-  let tempdate = date.toISOString();  
+  let tempdate = date.toISOString();
   const tz = date
     .toLocaleString("en", { timeZone, timeStyle: "long" })
     .split(" ")
-    .slice(-1)[0] ;
+    .slice(-1)[0];
   //console.log(tz);
   let tzoffset = "+00:00";
-  const dateString = tempdate.toString().substring(0,tempdate.toString().length-1);
+  const dateString = tempdate
+    .toString()
+    .substring(0, tempdate.toString().length - 1);
   //hack for firefox
   switch (tz) {
     case "GMT+1":
@@ -455,8 +457,8 @@ const getTZOffset = (timeZone, date = new Date()) => {
       tzoffset = "-02:00";
       break;
     case "GMT-1":
-        tzoffset = "-01:00";
-        break;
+      tzoffset = "-01:00";
+      break;
     default:
       console.error("Warning, could not find an offset for " + tz);
   }
