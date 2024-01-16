@@ -140,7 +140,7 @@ function update_data() {
 
       //Get locale from browser for properly formatted date/time stamps
       var locale = navigator.language;
-
+      
       //Timestamps from API are Europe/Berlin; determine offset for proper conversion
       var deOffset = getTZOffset("Europe/Berlin", new Date());
 
@@ -356,67 +356,67 @@ function update_data() {
 			<br>
 		`;
 
-        if (frequency >= 28000000 && frequency <= 28500000) {
+        if (frequency >= 28000 && frequency <= 28500) {
           L.marker([latlon[0], latlon[1]], { icon: iconColor })
             .addTo(Marker10m)
             .bindPopup(popup, {
               maxWidth: 560,
             });
-        } else if (frequency >= 27000000 && frequency <= 27900000) {
+        } else if (frequency >= 27000 && frequency <= 27900) {
           L.marker([latlon[0], latlon[1]], { icon: iconColor })
             .addTo(Marker11m)
             .bindPopup(popup, {
               maxWidth: 560,
             });
-        } else if (frequency >= 24000000 && frequency <= 24500000) {
+        } else if (frequency >= 24000 && frequency <= 24500) {
           L.marker([latlon[0], latlon[1]], { icon: iconColor })
             .addTo(Marker12m)
             .bindPopup(popup, {
               maxWidth: 560,
             });
-        } else if (frequency >= 21000000 && frequency <= 21500000) {
+        } else if (frequency >= 21000 && frequency <= 21500) {
           L.marker([latlon[0], latlon[1]], { icon: iconColor })
             .addTo(Marker15m)
             .bindPopup(popup, {
               maxWidth: 560,
             });
-        } else if (frequency >= 18000000 && frequency <= 18500000) {
+        } else if (frequency >= 18000 && frequency <= 18500) {
           L.marker([latlon[0], latlon[1]], { icon: iconColor })
             .addTo(Marker17m)
             .bindPopup(popup, {
               maxWidth: 560,
             });
-        } else if (frequency >= 14000000 && frequency <= 14500000) {
+        } else if (frequency >= 14000 && frequency <= 14500) {
           L.marker([latlon[0], latlon[1]], { icon: iconColor })
             .addTo(Marker20m)
             .bindPopup(popup, {
               maxWidth: 560,
             });
-        } else if (frequency >= 10000000 && frequency <= 10500000) {
+        } else if (frequency >= 10000 && frequency <= 10500) {
           L.marker([latlon[0], latlon[1]], { icon: iconColor })
             .addTo(Marker30m)
             .bindPopup(popup, {
               maxWidth: 560,
             });
-        } else if (frequency >= 7000000 && frequency <= 7200000) {
+        } else if (frequency >= 7000 && frequency <= 7200) {
           L.marker([latlon[0], latlon[1]], { icon: iconColor })
             .addTo(Marker40m)
             .bindPopup(popup, {
               maxWidth: 560,
             });
-        } else if (frequency >= 5300000 && frequency <= 5360000) {
+        } else if (frequency >= 5300 && frequency <= 5360) {
           L.marker([latlon[0], latlon[1]], { icon: iconColor })
             .addTo(Marker60m)
             .bindPopup(popup, {
               maxWidth: 560,
             });
-        } else if (frequency >= 3500000 && frequency <= 3800000) {
+        } else if (frequency >= 3500 && frequency <= 3800) {
           L.marker([latlon[0], latlon[1]], { icon: iconColor })
             .addTo(Marker80m)
             .bindPopup(popup, {
               maxWidth: 560,
             });
-        } else if (frequency >= 1800000 && frequency <= 2000000) {
+        } else if (frequency >= 1800 && frequency <= 2000) {
           L.marker([latlon[0], latlon[1]], { icon: iconColor })
             .addTo(Marker160m)
             .bindPopup(popup, {
@@ -435,16 +435,14 @@ function update_data() {
 }
 
 const getTZOffset = (timeZone, date = new Date()) => {
-  let tempdate = date.toISOString();
+  let tempdate = date.toISOString();  
   const tz = date
     .toLocaleString("en", { timeZone, timeStyle: "long" })
     .split(" ")
-    .slice(-1)[0];
+    .slice(-1)[0] ;
   //console.log(tz);
   let tzoffset = "+00:00";
-  const dateString = tempdate
-    .toString()
-    .substring(0, tempdate.toString().length - 1);
+  const dateString = tempdate.toString().substring(0,tempdate.toString().length-1);
   //hack for firefox
   switch (tz) {
     case "GMT+1":
@@ -457,8 +455,8 @@ const getTZOffset = (timeZone, date = new Date()) => {
       tzoffset = "-02:00";
       break;
     case "GMT-1":
-      tzoffset = "-01:00";
-      break;
+        tzoffset = "-01:00";
+        break;
     default:
       console.error("Warning, could not find an offset for " + tz);
   }
