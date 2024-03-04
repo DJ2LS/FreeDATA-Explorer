@@ -357,13 +357,13 @@ function update_data() {
 			</table>
 			<br>
 		`;
-    if (frequency >= 50000 && frequency <= 54000) {
-      L.marker([latlon[0], latlon[1]], { icon: iconColor })
-        .addTo(Marker6m)
-        .bindPopup(popup, {
-          maxWidth: 560,
-        });
-      } else if (frequency >= 28000 && frequency <= 28500) {
+        if (frequency >= 50000 && frequency <= 54000) {
+          L.marker([latlon[0], latlon[1]], { icon: iconColor })
+            .addTo(Marker6m)
+            .bindPopup(popup, {
+              maxWidth: 560,
+            });
+        } else if (frequency >= 28000 && frequency <= 28500) {
           L.marker([latlon[0], latlon[1]], { icon: iconColor })
             .addTo(Marker10m)
             .bindPopup(popup, {
