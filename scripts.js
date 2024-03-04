@@ -61,6 +61,7 @@ var terminator = L.terminator({
   fillColor: "#7f7f7f",
 }).addTo(map);
 
+var Marker6m = L.layerGroup().addTo(map);
 var Marker10m = L.layerGroup().addTo(map);
 var Marker11m = L.layerGroup().addTo(map);
 var Marker12m = L.layerGroup().addTo(map);
@@ -113,6 +114,7 @@ function update_data() {
     success: function (data) {
       var callsign_list = [];
       var gridsquare_list = [];
+      Marker6m.clearLayers();
       Marker10m.clearLayers();
       Marker11m.clearLayers();
       Marker12m.clearLayers();
@@ -355,8 +357,13 @@ function update_data() {
 			</table>
 			<br>
 		`;
-
-        if (frequency >= 28000 && frequency <= 28500) {
+        if (frequency >= 50000 && frequency <= 54000) {
+          L.marker([latlon[0], latlon[1]], { icon: iconColor })
+            .addTo(Marker6m)
+            .bindPopup(popup, {
+              maxWidth: 560,
+            });
+        } else if (frequency >= 28000 && frequency <= 28500) {
           L.marker([latlon[0], latlon[1]], { icon: iconColor })
             .addTo(Marker10m)
             .bindPopup(popup, {
@@ -490,6 +497,15 @@ function sortByPropertyDesc(property) {
 setInterval(function () {
   update_data();
 }, 60000);
+
+var enableFilterButton6m = document.getElementById("enable-filter-6m");
+enableFilterButton6m.addEventListener("change", function () {
+  if (enableFilterButton6m.checked) {
+    map.addLayer(Marker6m);
+  } else {
+    map.removeLayer(Marker6m);
+  }
+});
 
 var enableFilterButton10m = document.getElementById("enable-filter-10m");
 enableFilterButton10m.addEventListener("change", function () {
