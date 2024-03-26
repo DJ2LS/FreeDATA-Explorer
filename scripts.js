@@ -166,9 +166,9 @@ function update_data() {
 
         //Handle clients whom havent upgraded
         //Remove me when no longer necessary
-        console.info(data[i]["callsign"] + "=" +data[i]["bandwidth"] );
+        //console.info(data[i]["callsign"] + "=" +data[i]["bandwidth"] );
         if (bandwidth === "True" || bandwidth === "False") {
-          console.info("In true if block")
+          //console.info("In true if block")
           if (bandwidth === "True") {
             bandwidth = 250;
           } else {
