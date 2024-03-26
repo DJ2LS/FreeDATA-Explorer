@@ -158,7 +158,7 @@ function update_data() {
         var stimestamp = data[i]["timestamp"];
         var strength = data[i]["strength"];
         //Normalize some error/blank entries
-        if (strength === "err" || strength==="") strength="--";
+        if (strength === "err" || strength === "") strength = "--";
         var frequency = parseInt(data[i]["frequency"]) / 1000;
         var band = data[i]["band"];
         var version = data[i]["version"];
@@ -176,10 +176,8 @@ function update_data() {
           }
         }
         //------end compat if block
-        if (bandwidth > 1000) 
-          bandwidth = bandwidth /1000 + " kHz";
-        else
-          bandwidth = bandwidth + " Hz";
+        if (bandwidth > 1000) bandwidth = bandwidth / 1000 + " kHz";
+        else bandwidth = bandwidth + " Hz";
 
         var beacon = data[i]["beacon"];
         if (beacon == "True") {
