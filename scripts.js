@@ -157,15 +157,27 @@ function update_data() {
         var callsign = data[i]["callsign"];
         var stimestamp = data[i]["timestamp"];
         var strength = data[i]["strength"];
+        //Normalize some error/blank entries
+        if (strength === "err" || strength === "") strength = "--";
         var frequency = parseInt(data[i]["frequency"]) / 1000;
         var band = data[i]["band"];
         var version = data[i]["version"];
         var bandwidth = data[i]["bandwidth"];
-        if (bandwidth == "True") {
-          bandwidth = "563";
-        } else {
-          bandwidth = "2000";
+
+        //Handle clients whom havent upgraded
+        //Remove me when no longer necessary
+        //console.info(data[i]["callsign"] + "=" +data[i]["bandwidth"] );
+        if (bandwidth === "True" || bandwidth === "False") {
+          //console.info("In true if block")
+          if (bandwidth === "True") {
+            bandwidth = 250;
+          } else {
+            bandwidth = 1700;
+          }
         }
+        //------end compat if block
+        if (bandwidth > 1000) bandwidth = bandwidth / 1000 + " kHz";
+        else bandwidth = bandwidth + " Hz";
 
         var beacon = data[i]["beacon"];
         if (beacon == "True") {
@@ -344,7 +356,7 @@ function update_data() {
 			${timestamp.toLocaleString(locale)} / (${timeElapsedMinutes} min ago)
 			<hr>
 			<b>Frequency: </b>${frequency} kHz / ${band}<br> 
-			<b>Bandwidth: </b>${bandwidth} Hz<br> 	
+			<b>TX bandwidth: </b>${bandwidth}<br> 	
 			<b>Beacon: </b>${beacon}<br> 
 			<b>Local noise: </b>${strength}<br> 
 			<b>Version: </b>${version}
