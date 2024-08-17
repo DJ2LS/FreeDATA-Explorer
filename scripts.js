@@ -83,24 +83,37 @@ function processFrequencyMarkers(
       maxWidth: 560,
     });
 }
+const layerMap = {
+  Marker6m,
+  Marker10m,
+  Marker11m,
+  Marker12m,
+  Marker15m,
+  Marker17m,
+  Marker20m,
+  Marker30m,
+  Marker40m,
+  Marker60m,
+  Marker80m,
+  Marker160m,
+  MarkerOthers,
+};
 
 function getBandLayer(frequency) {
-  // Convert frequency from Hz to kHz
   const frequencyKHz = frequency / 1000;
-
-  if (frequencyKHz >= 50000 && frequencyKHz <= 54000) return Marker6m;
-  if (frequencyKHz >= 28000 && frequencyKHz <= 28500) return Marker10m;
-  if (frequencyKHz >= 27000 && frequencyKHz <= 27900) return Marker11m;
-  if (frequencyKHz >= 24000 && frequencyKHz <= 24500) return Marker12m;
-  if (frequencyKHz >= 21000 && frequencyKHz <= 21500) return Marker15m;
-  if (frequencyKHz >= 18000 && frequencyKHz <= 18500) return Marker17m;
-  if (frequencyKHz >= 14000 && frequencyKHz <= 14500) return Marker20m;
-  if (frequencyKHz >= 10000 && frequencyKHz <= 10500) return Marker30m;
-  if (frequencyKHz >= 7000 && frequencyKHz <= 7200) return Marker40m;
-  if (frequencyKHz >= 5300 && frequencyKHz <= 5360) return Marker60m;
-  if (frequencyKHz >= 3500 && frequencyKHz <= 3800) return Marker80m;
-  if (frequencyKHz >= 1800 && frequencyKHz <= 2000) return Marker160m;
-  return MarkerOthers;
+  if (frequencyKHz >= 50000 && frequencyKHz <= 54000) return layerMap.Marker6m;
+  if (frequencyKHz >= 28000 && frequencyKHz <= 28500) return layerMap.Marker10m;
+  if (frequencyKHz >= 27000 && frequencyKHz <= 27900) return layerMap.Marker11m;
+  if (frequencyKHz >= 24000 && frequencyKHz <= 24500) return layerMap.Marker12m;
+  if (frequencyKHz >= 21000 && frequencyKHz <= 21500) return layerMap.Marker15m;
+  if (frequencyKHz >= 18000 && frequencyKHz <= 18500) return layerMap.Marker17m;
+  if (frequencyKHz >= 14000 && frequencyKHz <= 14500) return layerMap.Marker20m;
+  if (frequencyKHz >= 10000 && frequencyKHz <= 10500) return layerMap.Marker30m;
+  if (frequencyKHz >= 7000 && frequencyKHz <= 7200) return layerMap.Marker40m;
+  if (frequencyKHz >= 5300 && frequencyKHz <= 5360) return layerMap.Marker60m;
+  if (frequencyKHz >= 3500 && frequencyKHz <= 3800) return layerMap.Marker80m;
+  if (frequencyKHz >= 1800 && frequencyKHz <= 2000) return layerMap.Marker160m;
+  return layerMap.MarkerOthers;
 }
 
 function generatePopupContent(data, timestamp) {
@@ -128,9 +141,9 @@ function update_data() {
   $.getJSON({
     url: "https://api.freedata.app/explorer.php",
     type: "GET",
-    dataType: "jsonp",
+    dataType: "jsonp", // JSONP if server supports it
     error: function (xhr, status, error) {
-      console.error("Error fetching data:", error);
+        console.error("Error fetching data:", error);
     },
     success: function (data) {
       // Clear all layers
@@ -178,7 +191,15 @@ function update_data() {
 
           if (lastHeard !== "" && lastHeard !== "null") {
             try {
-              lastHeard = JSON.parse(lastHeard);
+              try {
+    if (lastHeard && lastHeard !== "null") {
+        lastHeard = JSON.parse(lastHeard);
+    } else {
+        lastHeard = []; // Handle null or empty case
+    }
+} catch (err) {
+    lastHeard = item["lastheard"];
+}
               if (!Array.isArray(lastHeard)) {
                 console.warn(
                   "Expected lastHeard to be an array, got:",
@@ -328,15 +349,12 @@ function update_data() {
     },
   });
 }
-
-// Function to handle filter changes
+// Filter change handler using layerMap
 function handleFilterChange() {
   document.querySelectorAll(".filter").forEach(function (filterCheckbox) {
     filterCheckbox.addEventListener("change", function () {
       const layerName = filterCheckbox.id.split("-").pop();
-      const layer = eval(
-        `Marker${layerName.charAt(0).toUpperCase() + layerName.slice(1)}`,
-      );
+      const layer = layerMap[`Marker${layerName.charAt(0).toUpperCase() + layerName.slice(1)}`];
       if (filterCheckbox.checked) {
         map.addLayer(layer);
       } else {
