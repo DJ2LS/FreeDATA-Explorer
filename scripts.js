@@ -168,9 +168,11 @@ function update_data() {
           const latlon = gridSquareToLatLon(item.gridsquare);
           const timestamp = new Date(item.timestamp);
           const now = new Date();
-          const timeElapsedMinutes = Math.floor((now - timestamp) / (1000 * 60)); // Elapsed time in minutes
+          const timeElapsedMinutes = Math.floor(
+            (now - timestamp) / (1000 * 60),
+          ); // Elapsed time in minutes
           const colorIcon = determineMarkerColor(timeElapsedMinutes);
-          
+
           let lastHeardTable = ``;
           let lastHeard = item["lastheard"];
 
