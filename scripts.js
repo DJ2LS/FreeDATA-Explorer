@@ -143,7 +143,7 @@ function update_data() {
     type: "GET",
     dataType: "jsonp", // JSONP if server supports it
     error: function (xhr, status, error) {
-        console.error("Error fetching data:", error);
+      console.error("Error fetching data:", error);
     },
     success: function (data) {
       // Clear all layers
@@ -192,14 +192,14 @@ function update_data() {
           if (lastHeard !== "" && lastHeard !== "null") {
             try {
               try {
-    if (lastHeard && lastHeard !== "null") {
-        lastHeard = JSON.parse(lastHeard);
-    } else {
-        lastHeard = []; // Handle null or empty case
-    }
-} catch (err) {
-    lastHeard = item["lastheard"];
-}
+                if (lastHeard && lastHeard !== "null") {
+                  lastHeard = JSON.parse(lastHeard);
+                } else {
+                  lastHeard = []; // Handle null or empty case
+                }
+              } catch (err) {
+                lastHeard = item["lastheard"];
+              }
               if (!Array.isArray(lastHeard)) {
                 console.warn(
                   "Expected lastHeard to be an array, got:",
@@ -354,7 +354,10 @@ function handleFilterChange() {
   document.querySelectorAll(".filter").forEach(function (filterCheckbox) {
     filterCheckbox.addEventListener("change", function () {
       const layerName = filterCheckbox.id.split("-").pop();
-      const layer = layerMap[`Marker${layerName.charAt(0).toUpperCase() + layerName.slice(1)}`];
+      const layer =
+        layerMap[
+          `Marker${layerName.charAt(0).toUpperCase() + layerName.slice(1)}`
+        ];
       if (filterCheckbox.checked) {
         map.addLayer(layer);
       } else {
