@@ -22,7 +22,8 @@ var map = L.map("map").setView([51.505, -0.09], 5);
 L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
   maxZoom: 12,
   minZoom: 0,
-  attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+  attribution:
+    '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
 }).addTo(map);
 
 L.control.scale().addTo(map);
@@ -69,7 +70,13 @@ function determineMarkerColor(timeElapsedMinutes) {
   return icons.grey;
 }
 
-function processFrequencyMarkers(latlon, frequency, popup, colorIcon, bandLayer) {
+function processFrequencyMarkers(
+  latlon,
+  frequency,
+  popup,
+  colorIcon,
+  bandLayer,
+) {
   L.marker([latlon[0], latlon[1]], { icon: colorIcon })
     .addTo(bandLayer)
     .bindPopup(popup, {
@@ -96,7 +103,6 @@ function getBandLayer(frequency) {
   return MarkerOthers;
 }
 
-
 function generatePopupContent(data, timestamp) {
   const locale = navigator.language;
   return `<b>${data.callsign}</b> ( ${data.gridsquare} )<br>
@@ -110,15 +116,14 @@ function generatePopupContent(data, timestamp) {
 }
 
 function update_data() {
-
   //Get locale from browser for properly formatted date/time stamps
-      var locale = navigator.language;
+  var locale = navigator.language;
 
-      //Timestamps from API are Europe/Berlin; determine offset for proper conversion
-      var deOffset = getTZOffset("Europe/Berlin", new Date());
+  //Timestamps from API are Europe/Berlin; determine offset for proper conversion
+  var deOffset = getTZOffset("Europe/Berlin", new Date());
 
-      //Get clients timezone offset
-      var timezone = new Date().getTimezoneOffset();
+  //Get clients timezone offset
+  var timezone = new Date().getTimezoneOffset();
 
   $.getJSON({
     url: "https://api.freedata.app/explorer.php",
@@ -129,12 +134,27 @@ function update_data() {
     },
     success: function (data) {
       // Clear all layers
-      [Marker6m, Marker10m, Marker11m, Marker12m, Marker15m, Marker17m, Marker20m, Marker30m, Marker40m, Marker60m, Marker80m, Marker160m, MarkerOthers, Lines].forEach(layer => layer.clearLayers());
+      [
+        Marker6m,
+        Marker10m,
+        Marker11m,
+        Marker12m,
+        Marker15m,
+        Marker17m,
+        Marker20m,
+        Marker30m,
+        Marker40m,
+        Marker60m,
+        Marker80m,
+        Marker160m,
+        MarkerOthers,
+        Lines,
+      ].forEach((layer) => layer.clearLayers());
       var callsign_list = [];
       var gridsquare_list = [];
 
       // Prepare lists of callsigns and gridsquares
-      data.forEach(item => {
+      data.forEach((item) => {
         callsign_list.push(item.callsign);
         gridsquare_list.push(item.gridsquare.toUpperCase());
       });
@@ -143,81 +163,112 @@ function update_data() {
       const widestDistance = calculateWidestDistance(data);
 
       // Process the data and create markers
-      data.forEach(item => {
-  try {
-    const latlon = gridSquareToLatLon(item.gridsquare);
-    const timestamp = new Date(item.timestamp);
-    const timeElapsedMinutes = (Date.now() - timestamp.getTime()) / 1000 / 60;
-    const colorIcon = determineMarkerColor(timeElapsedMinutes);
+      data.forEach((item) => {
+        try {
+          const latlon = gridSquareToLatLon(item.gridsquare);
+          const timestamp = new Date(item.timestamp);
+          const timeElapsedMinutes =
+            (Date.now() - timestamp.getTime()) / 1000 / 60;
+          const colorIcon = determineMarkerColor(timeElapsedMinutes);
 
+          let lastHeardTable = ``;
+          let lastHeard = item["lastheard"];
 
-    let lastHeardTable = ``;
-    let lastHeard = item["lastheard"];
+          if (lastHeard !== "" && lastHeard !== "null") {
+            try {
+              lastHeard = JSON.parse(lastHeard);
+              if (!Array.isArray(lastHeard)) {
+                console.warn(
+                  "Expected lastHeard to be an array, got:",
+                  lastHeard,
+                );
+                return;
+              }
+              // Sort heard list by newest first
+              lastHeard = lastHeard.sort(sortByPropertyDesc("timestamp"));
 
-    if (lastHeard !== "" && lastHeard !== "null") {
-      try {
-        lastHeard = JSON.parse(lastHeard);
-        if (!Array.isArray(lastHeard)) {
-          console.warn("Expected lastHeard to be an array, got:", lastHeard);
-          return;
-        }
-        // Sort heard list by newest first
-        lastHeard = lastHeard.sort(sortByPropertyDesc("timestamp"));
+              lastHeard.forEach((heard) => {
+                try {
+                  // Validate required fields
+                  if (
+                    !heard.callsign ||
+                    !heard.grid ||
+                    heard.grid === "------"
+                  ) {
+                    console.warn(
+                      "Invalid or missing grid or callsign in heard station:",
+                      heard,
+                    );
+                    return;
+                  }
 
-        lastHeard.forEach(heard => {
-          try {
-            // Validate required fields
-            if (!heard.callsign || !heard.grid || heard.grid === "------") {
-              console.warn("Invalid or missing grid or callsign in heard station:", heard);
-              return;
-            }
+                  if (
+                    heard.callsign.split("-", 1)[0] ===
+                      item.callsign.split("-", 1)[0] &&
+                    heard.grid.toLowerCase() === item.gridsquare.toLowerCase()
+                  ) {
+                    return; // Skip stations with the same callsign and grid square
+                  }
 
-            if (
-              heard.callsign.split("-", 1)[0] === item.callsign.split("-", 1)[0] &&
-              heard.grid.toLowerCase() === item.gridsquare.toLowerCase()
-            ) {
-              return; // Skip stations with the same callsign and grid square
-            }
+                  const latlon_dx = gridSquareToLatLon(heard.grid);
+                  if (
+                    !latlon_dx ||
+                    (latlon_dx[0] === 0 && latlon_dx[1] === 0)
+                  ) {
+                    console.warn(
+                      "Invalid latlon_dx for heard station:",
+                      heard.grid,
+                    );
+                    return;
+                  }
 
-            const latlon_dx = gridSquareToLatLon(heard.grid);
-            if (!latlon_dx || latlon_dx[0] === 0 && latlon_dx[1] === 0) {
-              console.warn("Invalid latlon_dx for heard station:", heard.grid);
-              return;
-            }
+                  const dist_KM = Math.round(
+                    distance(
+                      latlon[0],
+                      latlon[1],
+                      latlon_dx[0],
+                      latlon_dx[1],
+                      "K",
+                    ),
+                  );
+                  const dist_NM = Math.round(
+                    distance(
+                      latlon[0],
+                      latlon[1],
+                      latlon_dx[0],
+                      latlon_dx[1],
+                      "N",
+                    ),
+                  );
 
-            const dist_KM = Math.round(
-              distance(latlon[0], latlon[1], latlon_dx[0], latlon_dx[1], "K")
-            );
-            const dist_NM = Math.round(
-              distance(latlon[0], latlon[1], latlon_dx[0], latlon_dx[1], "N")
-            );
+                  if (dist_KM > 0 && callsign_list.includes(heard.callsign)) {
+                    const latlngs = [
+                      [latlon[0], latlon[1]],
+                      [latlon_dx[0], latlon_dx[1]],
+                    ];
 
-            if (dist_KM > 0 && callsign_list.includes(heard.callsign)) {
-              const latlngs = [
-                [latlon[0], latlon[1]],
-                [latlon_dx[0], latlon_dx[1]],
-              ];
+                    let LineColor;
+                    if (heard.snr >= 15) LineColor = "green";
+                    else if (heard.snr >= 10) LineColor = "green";
+                    else if (heard.snr >= 5) LineColor = "yellow";
+                    else if (heard.snr >= 2) LineColor = "orange";
+                    else if (heard.snr >= 0) LineColor = "red";
+                    else LineColor = "grey";
 
-              let LineColor;
-              if (heard.snr >= 15) LineColor = "green";
-              else if (heard.snr >= 10) LineColor = "green";
-              else if (heard.snr >= 5) LineColor = "yellow";
-              else if (heard.snr >= 2) LineColor = "orange";
-              else if (heard.snr >= 0) LineColor = "red";
-              else LineColor = "grey";
+                    L.polyline(latlngs, {
+                      color: LineColor,
+                      weight: 2,
+                      opacity: 0.5,
+                      smoothFactor: 1,
+                    }).addTo(Lines);
+                  }
 
-              L.polyline(latlngs, {
-                color: LineColor,
-                weight: 2,
-                opacity: 0.5,
-                smoothFactor: 1,
-              }).addTo(Lines);
-            }
+                  let lastHeardFrequency = heard.frequency || "-----";
+                  const formattedTime = new Date(
+                    heard.timestamp * 1000,
+                  ).toLocaleString(locale);
 
-            let lastHeardFrequency = heard.frequency || "-----";
-            const formattedTime = new Date(heard.timestamp * 1000).toLocaleString(locale);
-
-            lastHeardTable += `
+                  lastHeardTable += `
               <tr>
                 <td>${formattedTime}</td>
                 <td>${heard.callsign}</td>
@@ -227,16 +278,20 @@ function update_data() {
                 <td>${heard.snr}dB</td>
               </tr>
             `;
-          } catch (err) {
-            console.error("Error processing last heard station:", heard, err);
+                } catch (err) {
+                  console.error(
+                    "Error processing last heard station:",
+                    heard,
+                    err,
+                  );
+                }
+              });
+            } catch (err) {
+              console.error("Error parsing lastHeard JSON:", lastHeard, err);
+            }
           }
-        });
-      } catch (err) {
-        console.error("Error parsing lastHeard JSON:", lastHeard, err);
-      }
-    }
 
-    const popupContent = `
+          const popupContent = `
       <b>${item.callsign}</b> (${item.gridsquare})<br>
       ${timestamp.toLocaleString(locale)} / (${timeElapsedMinutes} min ago)
       <hr>
@@ -255,25 +310,31 @@ function update_data() {
       <br>
     `;
 
-    processFrequencyMarkers(latlon, item.frequency, popupContent, colorIcon, getBandLayer(item.frequency));
-
-  } catch (err) {
-    console.error("Error processing station:", item, err);
-  }
-});
+          processFrequencyMarkers(
+            latlon,
+            item.frequency,
+            popupContent,
+            colorIcon,
+            getBandLayer(item.frequency),
+          );
+        } catch (err) {
+          console.error("Error processing station:", item, err);
+        }
+      });
       // Update statistics in the navbar
       updateStatistics(data.length, widestDistance);
-
     },
   });
 }
 
 // Function to handle filter changes
 function handleFilterChange() {
-  document.querySelectorAll('.filter').forEach(function(filterCheckbox) {
-    filterCheckbox.addEventListener('change', function() {
-      const layerName = filterCheckbox.id.split('-').pop();
-      const layer = eval(`Marker${layerName.charAt(0).toUpperCase() + layerName.slice(1)}`);
+  document.querySelectorAll(".filter").forEach(function (filterCheckbox) {
+    filterCheckbox.addEventListener("change", function () {
+      const layerName = filterCheckbox.id.split("-").pop();
+      const layer = eval(
+        `Marker${layerName.charAt(0).toUpperCase() + layerName.slice(1)}`,
+      );
       if (filterCheckbox.checked) {
         map.addLayer(layer);
       } else {
@@ -282,8 +343,6 @@ function handleFilterChange() {
     });
   });
 }
-
-
 
 function getTZOffset(timeZone, date = new Date()) {
   let tempdate = date.toISOString();
@@ -338,10 +397,12 @@ function distance(lat1, lon1, lat2, lon2, unit) {
 }
 
 // Event Listeners for Filters
-document.querySelectorAll('.filter').forEach(function(filterCheckbox) {
-  filterCheckbox.addEventListener('change', function() {
-    const layerName = filterCheckbox.id.split('-').pop();
-    const layer = eval(`Marker${layerName.charAt(0).toUpperCase() + layerName.slice(1)}`);
+document.querySelectorAll(".filter").forEach(function (filterCheckbox) {
+  filterCheckbox.addEventListener("change", function () {
+    const layerName = filterCheckbox.id.split("-").pop();
+    const layer = eval(
+      `Marker${layerName.charAt(0).toUpperCase() + layerName.slice(1)}`,
+    );
     if (filterCheckbox.checked) {
       map.addLayer(layer);
     } else {
@@ -370,8 +431,8 @@ function sortByPropertyDesc(property) {
 
 // Function to update the Total Stations and Widest Distance badges in the navbar
 function updateStatistics(totalStations, widestDistance) {
-  document.getElementById('total-stations').innerText = totalStations;
-  document.getElementById('widest-distance').innerText = `${widestDistance} km`;
+  document.getElementById("total-stations").innerText = totalStations;
+  document.getElementById("widest-distance").innerText = `${widestDistance} km`;
 }
 
 // Function to calculate the widest distance between any two stations
@@ -384,7 +445,13 @@ function calculateWidestDistance(stations) {
       const latlon1 = gridSquareToLatLon(stations[i].gridsquare);
       const latlon2 = gridSquareToLatLon(stations[j].gridsquare);
 
-      const dist = distance(latlon1[0], latlon1[1], latlon2[0], latlon2[1], "K");
+      const dist = distance(
+        latlon1[0],
+        latlon1[1],
+        latlon2[0],
+        latlon2[1],
+        "K",
+      );
 
       if (dist > maxDistance) {
         maxDistance = dist;
@@ -397,7 +464,6 @@ function calculateWidestDistance(stations) {
 
 // Call handleFilterChange to initialize filter functionality
 handleFilterChange();
-
 
 // Set the map to refresh every 60 seconds
 setInterval(update_data, 60000);
