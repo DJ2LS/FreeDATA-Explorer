@@ -131,7 +131,8 @@ function generatePopupContent(data, timestamp) {
 
 function addMinutes(date, minutes) {
   date.setMinutes(date.getMinutes() + minutes);
-
+  return date;
+  }
 
 function update_data() {
   //Get locale from browser for properly formatted date/time stamps
@@ -184,11 +185,26 @@ function update_data() {
       data.forEach((item) => {
         try {
           const latlon = gridSquareToLatLon(item.gridsquare);
-          const timestamp = new Date(item.timestamp);
-          const now = new Date();
-          const timeElapsedMinutes = Math.floor(
-            (now - timestamp) / (1000 * 60),
-          ); // Elapsed time in minutes
+          //const timestamp = new Date(item.timestamp);
+          //const now = new Date();
+          //const timeElapsedMinutes = Math.floor(
+          //  (now - timestamp) / (1000 * 60),
+          //); // Elapsed time in minutes
+
+
+ //var stimestamp = data[i]["timestamp"];
+               //Convert to date and subtract DE offset; should now be GMT
+        var timestamp = addMinutes(new Date(item.timestamp), -deOffset);
+        //Now add offset for dispaying correct local time
+        timestamp = addMinutes(timestamp, -timezone);
+        //console.log(timestamp);
+        var timeElapsed = Date.now() - timestamp.getTime();
+        var timeElapsedSeconds = Math.floor(timeElapsed / 1000);
+        var timeElapsedMinutes = Math.floor(timeElapsedSeconds / 60);
+
+
+
+
           const colorIcon = determineMarkerColor(timeElapsedMinutes);
 
           let lastHeardTable = ``;
@@ -317,15 +333,6 @@ function update_data() {
             }
           }
 
-               //Convert to date and subtract DE offset; should now be GMT
-        var timestamp = addMinutes(new Date(stimestamp), -deOffset);
-        //Now add offset for dispaying correct local time
-        timestamp = addMinutes(timestamp, -timezone);
-        //console.log(timestamp);
-
-        var timeElapsed = Date.now() - timestamp.getTime();
-        var timeElapsedSeconds = Math.floor(timeElapsed / 1000);
-        var timeElapsedMinutes = Math.floor(timeElapsedSeconds / 60);
 
           const popupContent = `
       <b>${item.callsign}</b> (${item.gridsquare})<br>
