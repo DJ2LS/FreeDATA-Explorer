@@ -128,6 +128,11 @@ function generatePopupContent(data, timestamp) {
     <b>Version: </b>${data.version}`;
 }
 
+
+function addMinutes(date, minutes) {
+  date.setMinutes(date.getMinutes() + minutes);
+
+
 function update_data() {
   //Get locale from browser for properly formatted date/time stamps
   var locale = navigator.language;
@@ -137,6 +142,7 @@ function update_data() {
 
   //Get clients timezone offset
   var timezone = new Date().getTimezoneOffset();
+
 
   $.getJSON({
     url: "https://api.freedata.app/explorer.php",
@@ -174,7 +180,6 @@ function update_data() {
 
       // Calculate widest distance
       const widestDistance = calculateWidestDistance(data);
-
       // Process the data and create markers
       data.forEach((item) => {
         try {
@@ -287,9 +292,7 @@ function update_data() {
                   }
 
                   let lastHeardFrequency = heard.frequency || "-----";
-                  const formattedTime = new Date(
-                    heard.timestamp * 1000,
-                  ).toLocaleString(locale);
+                  const formattedTime = new Date(heard.timestamp * 1000,).toLocaleString(locale);
 
                   lastHeardTable += `
               <tr>
@@ -313,6 +316,16 @@ function update_data() {
               console.error("Error parsing lastHeard JSON:", lastHeard, err);
             }
           }
+
+               //Convert to date and subtract DE offset; should now be GMT
+        var timestamp = addMinutes(new Date(stimestamp), -deOffset);
+        //Now add offset for dispaying correct local time
+        timestamp = addMinutes(timestamp, -timezone);
+        //console.log(timestamp);
+
+        var timeElapsed = Date.now() - timestamp.getTime();
+        var timeElapsedSeconds = Math.floor(timeElapsed / 1000);
+        var timeElapsedMinutes = Math.floor(timeElapsedSeconds / 60);
 
           const popupContent = `
       <b>${item.callsign}</b> (${item.gridsquare})<br>
