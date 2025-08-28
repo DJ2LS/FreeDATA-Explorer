@@ -479,21 +479,25 @@ function calculateWidestDistance(stations) {
 
   // Loop through all pairs of stations to find the maximum distance
   for (let i = 0; i < stations.length; i++) {
-    for (let j = i + 1; j < stations.length; j++) {
-      const latlon1 = gridSquareToLatLon(stations[i].gridsquare);
-      const latlon2 = gridSquareToLatLon(stations[j].gridsquare);
+      for (let j = i + 1; j < stations.length; j++) {
+          try {
+              const latlon1 = gridSquareToLatLon(stations[i].gridsquare);
+              const latlon2 = gridSquareToLatLon(stations[j].gridsquare);
+              const dist = distance(
+                  latlon1[0],
+                  latlon1[1],
+                  latlon2[0],
+                  latlon2[1],
+                  "K",
+              );
 
-      const dist = distance(
-        latlon1[0],
-        latlon1[1],
-        latlon2[0],
-        latlon2[1],
-        "K",
-      );
-
-      if (dist > maxDistance) {
-        maxDistance = dist;
-      }
+              if (dist > maxDistance) {
+                  maxDistance = dist;
+              }
+          } catch (e) {
+              console.error(e);
+              continue;
+          }
     }
   }
 
